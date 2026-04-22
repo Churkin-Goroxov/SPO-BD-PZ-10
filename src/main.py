@@ -1,4 +1,10 @@
-from db.config import db_config_pg
-from db.db_setup import create_tables
+from db.db_setup import create_tables, seed_data
+from db.config import get_config
 
-create_tables(db_config_pg, "postgres")
+DB_NAME = "pz_10"
+DB_TYPE = "postgres"
+
+config = get_config(DB_NAME, DB_TYPE)
+
+create_tables(config, DB_TYPE)
+seed_data(config, DB_TYPE)

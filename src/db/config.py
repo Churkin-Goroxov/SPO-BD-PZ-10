@@ -6,7 +6,7 @@ def get_config(db_name: str, db_type: str):
             "port": 5432,
             "user": "user",
             "password": "1234",
-            "dbname": "mybd"
+            "dbname": db_name
         }
 
     elif db_type == "mysql":

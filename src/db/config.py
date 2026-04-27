@@ -13,8 +13,8 @@ def get_config(db_name: str, db_type: str):
         return {
             "host": "127.0.0.1",
             "port": 3306,
-            "user": "user",
-            "password": "1234",
+            "user": "admin",
+            "password": "admin",
             "database": db_name
         }
 

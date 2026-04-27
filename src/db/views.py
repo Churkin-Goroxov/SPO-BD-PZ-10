@@ -1,29 +1,31 @@
 def create_views(connection):
     cursor = connection.cursor()
 
-    # 1. Студенты + группы
-    cursor.execute("""
+    is_mysql = connection.__class__.__module__.startswith("mysql")
+
+    def q(name):
+        return f"`{name}`" if is_mysql else f'"{name}"'
+
+    cursor.execute(f"""
     CREATE OR REPLACE VIEW vw_student_groups AS
     SELECT s.id, s.name, g.name AS group_name
-    FROM students s
-    JOIN groups g ON s.group_id = g.id;
+    FROM {q("students")} s
+    JOIN {q("groups")} g ON s.group_id = g.id;
     """)
 
-    # 2. Дисциплины + преподаватели
-    cursor.execute("""
+    cursor.execute(f"""
     CREATE OR REPLACE VIEW vw_subject_teachers AS
     SELECT sub.name AS subject, t.name AS teacher
-    FROM subjects sub
-    JOIN teachers t ON sub.teacher_id = t.id;
+    FROM {q("subjects")} sub
+    JOIN {q("teachers")} t ON sub.teacher_id = t.id;
     """)
 
-    # 3. Оценки студентов
-    cursor.execute("""
+    cursor.execute(f"""
     CREATE OR REPLACE VIEW vw_student_grades AS
-    SELECT s.name AS student, sub.name AS subject, g.grade, g.date
-    FROM grades g
-    JOIN students s ON g.student_id = s.id
-    JOIN subjects sub ON g.subject_id = sub.id;
+    SELECT s.name AS student, sub.name AS subject, g.grade, g.{q("date")}
+    FROM {q("grades")} g
+    JOIN {q("students")} s ON g.student_id = s.id
+    JOIN {q("subjects")} sub ON g.subject_id = sub.id;
     """)
 
     connection.commit()

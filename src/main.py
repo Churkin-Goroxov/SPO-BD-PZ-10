@@ -5,7 +5,7 @@ from db.sql_table import SQLTable
 from db.access import create_roles_and_users
 
 DB_NAME = "pz_10"
-DB_TYPE = "postgres"
+DB_TYPE = "mysql"
 
 config = get_config(DB_NAME, DB_TYPE)
 
